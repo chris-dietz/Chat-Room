@@ -9,13 +9,13 @@ public class RestfulServer {
         this.processRestfulApiRequests();
     }
 
-    // Starts RESTful API on port 8080
+    // Starts REST-ful API on port 8080
     private void configureRestfulApiServer() {
         Spark.port(8080); // Starts Spark MicroServer
         System.out.println("Server Configured to listen on port 8080");
     }
 
-    // Configures Spark's RESTful API routes
+    // Configures Spark's REST-ful API routes
     private void processRestfulApiRequests() {
         Spark.get("/", this::echoRequest); // Uses root path and calls echoRequest
     }
@@ -29,32 +29,10 @@ public class RestfulServer {
         return HttpRequestToJson(request);
     }
 
-    // Returns String for echoRequest, which is inturn for Spark.get()
+    // Returns String for echoRequest, which is in turn for Spark.get()
     private String HttpRequestToJson(Request request) {
         System.out.println(request.body());
         return request.body();
-//        return "{\n"
-//                +"\"attributes\":\""    + request.attributes()      + "\",\n"
-//                +"\"body\":\""          + request.body()            + "\",\n"
-//                +"\"contentType\":\""   + request.contentType()     + "\",\n"
-//                +"\"contextPath\":\""   + request.contextPath()     + "\",\n"
-//                +"\"cookies\":\""       + request.cookies()         + "\",\n"
-//                +"\"headers\":\""       + request.headers()         + "\",\n"
-//                +"\"host\":\""          + request.host()            + "\",\n"
-//                +"\"ip\":\""            + request.ip()              + "\",\n"
-//                +"\"params\":\""        + request.params()          + "\",\n"
-//                +"\"pathInfo\":\""      + request.pathInfo()        + "\",\n"
-//                +"\"port\":\""          + request.port()            + "\",\n"
-//                +"\"protocol\":\""      + request.protocol()        + "\",\n"
-//                +"\"queryParams\":\""   + request.queryParams()     + "\",\n"
-//                +"\"requestMethod\":\"" + request.requestMethod()   + "\",\n"
-//                +"\"scheme\":\""        + request.scheme()          + "\",\n"
-//                +"\"servletPath\":\""   + request.servletPath()     + "\",\n"
-//                +"\"session\":\""       + request.session()         + "\",\n"
-//                +"\"uri\":\""           + request.uri()             + "\",\n"
-//                +"\"url\":\""           + request.url()             + "\",\n"
-//                +"\"userAgent\":\""     + request.userAgent()       + "\",\n"
-//                + "}";
     }
 
     public static void main(String[] args) {
