@@ -17,7 +17,7 @@ public class RestfulServer {
 
     // Configures Spark's RESTful API routes
     private void processRestfulApiRequests() {
-         Spark.get("/", this::echoRequest); // Uses root path and calls echoRequest
+        Spark.get("/", this::echoRequest); // Uses root path and calls echoRequest
     }
 
     // Called by Spark.get, can be called anything. Must return a String and take Request & Response args
@@ -31,28 +31,30 @@ public class RestfulServer {
 
     // Returns String for echoRequest, which is inturn for Spark.get()
     private String HttpRequestToJson(Request request) {
-        return "{\n"
-                +"\"attributes\":\""    + request.attributes()      + "\",\n"
-                +"\"body\":\""          + request.body()            + "\",\n"
-                +"\"contentType\":\""   + request.contentType()     + "\",\n"
-                +"\"contextPath\":\""   + request.contextPath()     + "\",\n"
-                +"\"cookies\":\""       + request.cookies()         + "\",\n"
-                +"\"headers\":\""       + request.headers()         + "\",\n"
-                +"\"host\":\""          + request.host()            + "\",\n"
-                +"\"ip\":\""            + request.ip()              + "\",\n"
-                +"\"params\":\""        + request.params()          + "\",\n"
-                +"\"pathInfo\":\""      + request.pathInfo()        + "\",\n"
-                +"\"port\":\""          + request.port()            + "\",\n"
-                +"\"protocol\":\""      + request.protocol()        + "\",\n"
-                +"\"queryParams\":\""   + request.queryParams()     + "\",\n"
-                +"\"requestMethod\":\"" + request.requestMethod()   + "\",\n"
-                +"\"scheme\":\""        + request.scheme()          + "\",\n"
-                +"\"servletPath\":\""   + request.servletPath()     + "\",\n"
-                +"\"session\":\""       + request.session()         + "\",\n"
-                +"\"uri\":\""           + request.uri()             + "\",\n"
-                +"\"url\":\""           + request.url()             + "\",\n"
-                +"\"userAgent\":\""     + request.userAgent()       + "\",\n"
-                + "}";
+        System.out.println(request.body());
+        return request.body();
+//        return "{\n"
+//                +"\"attributes\":\""    + request.attributes()      + "\",\n"
+//                +"\"body\":\""          + request.body()            + "\",\n"
+//                +"\"contentType\":\""   + request.contentType()     + "\",\n"
+//                +"\"contextPath\":\""   + request.contextPath()     + "\",\n"
+//                +"\"cookies\":\""       + request.cookies()         + "\",\n"
+//                +"\"headers\":\""       + request.headers()         + "\",\n"
+//                +"\"host\":\""          + request.host()            + "\",\n"
+//                +"\"ip\":\""            + request.ip()              + "\",\n"
+//                +"\"params\":\""        + request.params()          + "\",\n"
+//                +"\"pathInfo\":\""      + request.pathInfo()        + "\",\n"
+//                +"\"port\":\""          + request.port()            + "\",\n"
+//                +"\"protocol\":\""      + request.protocol()        + "\",\n"
+//                +"\"queryParams\":\""   + request.queryParams()     + "\",\n"
+//                +"\"requestMethod\":\"" + request.requestMethod()   + "\",\n"
+//                +"\"scheme\":\""        + request.scheme()          + "\",\n"
+//                +"\"servletPath\":\""   + request.servletPath()     + "\",\n"
+//                +"\"session\":\""       + request.session()         + "\",\n"
+//                +"\"uri\":\""           + request.uri()             + "\",\n"
+//                +"\"url\":\""           + request.url()             + "\",\n"
+//                +"\"userAgent\":\""     + request.userAgent()       + "\",\n"
+//                + "}";
     }
 
     public static void main(String[] args) {
