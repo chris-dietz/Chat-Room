@@ -25,7 +25,6 @@ public class RestfulServer {
         response.type("application/json"); // Output response as JSON
         response.header("Access-Control-Allow-Origin", "*"); //Set to wildcard to share with any calling code
         response.status(200); // Reports an OK status
-        // response.status(418); // Reports that I am a teapot
 
         return HttpRequestToJson(request);
     }
