@@ -1,5 +1,5 @@
 # CS 370 Team Project
-##Description
+## Description
 A “Description” section outlining the purpose of your project
 
 ## Usage
