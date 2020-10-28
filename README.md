@@ -1,6 +1,14 @@
 # CS 370 Team Project
 ## Description
-A “Description” section outlining the purpose of your project
+<p>
+  The purpose of this project is to create a containerized chat room. The benefits from having a containerized chat room are: 
+  <ul>
+      <li> The chat room is easy to implement on different computer systems since there is no need to install extra software or worry about compatibility as long as it can run a docker container.</i>
+      <li> The chat room would have an additional layer of security since it is separated away from the host machine by a container, so most vulnerabilities inside the chat room wouldn’t affect to main machine, and vise versa. </li>
+      <li> The server will be able to communicate a lot faster than if it were hosted on a virtual machine due to the lack of an operating system in the container, while still getting the benefits of it being isolated.</li>
+  </ul>
+  Overall, this chat room is able to be a secure, isolated enviorment that is easy to deploy on any modern system.
+</p>
 
 ## Usage
 To build this project you must have Maven and openjdk11 installed on your system. 
