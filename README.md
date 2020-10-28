@@ -5,7 +5,7 @@ A “Description” section outlining the purpose of your project
 ## Usage
 A “Usage” section containing instructions on how to build and run your project. Additionally, this section may contain options to provide at runtime, and their respective descriptions.
 
-##Docker
+## Docker
 To build the project run 
     
     docker build -t project .
