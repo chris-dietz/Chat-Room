@@ -23,4 +23,4 @@ To build the container run:
     docker build -t project .
 To run the container run:
 
-    docker run project -p 8080:8080
+    docker run -p 8080:8080 project
