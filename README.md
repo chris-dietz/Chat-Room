@@ -19,7 +19,7 @@ You can now start the server with:
     java -jar target/Project-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 The webserver will print the body of GET and POST requests sent on the root
-path "/" to stdout. As well as echo GET requests over http.    
+path "/" to stdout over port 8080. As well as echo GET requests over http.    
 
 ## Docker
 To build the container run:
