@@ -5,7 +5,7 @@ public abstract class Message {
     private final String subject;
     private final String body;
     private final String thread;
-    private long msgId = -1; //Unique message id set by server
+    private final long msgId;//Unique message id set by server
     private final String type;
 
     public Message(String type,String from, String subject, String body, String thread) {
@@ -15,13 +15,9 @@ public abstract class Message {
         this.body = body;
         this.thread = thread;
         SecureRandom rng = new SecureRandom();
-        msgId = rng.nextLong();
-    }
-
-    public void generateMsgID(){
-        SecureRandom rng = new SecureRandom();
         msgId = Math.abs(rng.nextLong());
     }
+
 
     public String getFrom() {
         return from;
