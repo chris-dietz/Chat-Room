@@ -1,4 +1,13 @@
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.TimeZone;
 
 public abstract class Message {
     private final String from;
@@ -8,6 +17,7 @@ public abstract class Message {
     private final long msgId;//Unique message id set by server
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String type;
+    private final String timestamp;
 
     public Message(String type,String from, String subject, String body, String thread) {
         this.type = type;
@@ -17,8 +27,16 @@ public abstract class Message {
         this.thread = thread;
         SecureRandom rng = new SecureRandom();
         msgId = Math.abs(rng.nextLong());
+        timestamp = ZonedDateTime.now( ZoneOffset.UTC ).truncatedTo( ChronoUnit.SECONDS).format( DateTimeFormatter.ISO_INSTANT );
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
 
     public String getFrom() {
         return from;
