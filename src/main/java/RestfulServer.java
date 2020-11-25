@@ -8,8 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class ServerError {
-    private String errorCode;
-    private String message;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String errorCode;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String message;
 
     public ServerError(String errorCode, String message) {
         this.errorCode = errorCode;
@@ -18,6 +20,7 @@ class ServerError {
 }
 
 public class RestfulServer {
+    @SuppressWarnings("unused")
     private final Logger log = LoggerFactory.getLogger(RestfulServer.class);
     // Default constructor for RestfulServer
     public RestfulServer() {
@@ -88,6 +91,7 @@ public class RestfulServer {
             return getHTTPError("400", "Invalid Chat message, missing type field");
         }
 
+
         if(type.equals("group_message") && msgJson.has("from") && msgJson.has("subject") && msgJson.has("body") && msgJson.has("thread") && msgJson.has("room")){
             GroupMessage newMessage = new GroupMessage(msgJson.get("from").getAsString(),msgJson.get("subject").getAsString(),msgJson.get("body").getAsString(),msgJson.get("thread").getAsString(),msgJson.get("room").getAsString()); //Construct new Group Message Object
             System.out.println("from: "+newMessage.getFrom());
@@ -95,8 +99,7 @@ public class RestfulServer {
             System.out.println("body: "+ newMessage.getBody());
             System.out.println("thread: "+ newMessage.getThread());
             System.out.println("msg_id: "+newMessage.getMsgId());
-            String response_body = gson.toJson(newMessage);
-            return response_body;
+            return gson.toJson(newMessage);
         }
         else{
             response.status(400);
@@ -111,10 +114,10 @@ public class RestfulServer {
         response.status(200); // Reports an OK status
         GroupMessage msg = new GroupMessage("testbot","Hello World", "I'm the body","1","main");
         Gson gson = new Gson();
-        String responseBody = gson.toJson(msg);
-        return responseBody;
+        return gson.toJson(msg);
     }
     public static void main(String[] args) {
+        @SuppressWarnings("unused")
         RestfulServer restfulServer = new RestfulServer();
     }
 }

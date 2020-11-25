@@ -6,6 +6,7 @@ public abstract class Message {
     private final String body;
     private final String thread;
     private final long msgId;//Unique message id set by server
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String type;
 
     public Message(String type,String from, String subject, String body, String thread) {
