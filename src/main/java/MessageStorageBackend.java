@@ -54,7 +54,7 @@ public class MessageStorageBackend {
         return messages.add(m);
     }
 
-    Message removeMessage(long msg_id){
+    Message getMessage(long msg_id){
         for(Message m: messages){
             if(m.getMsgId() == msg_id){
                 return m;
@@ -63,6 +63,15 @@ public class MessageStorageBackend {
         return null;
     }
 
+    Message removeMessage(long msg_id){
+        for(Message m: messages){
+            if(m.getMsgId() == msg_id){
+                messages.remove(m);
+                return m;
+            }
+        }
+        return null;
+    }
 
 
 }
