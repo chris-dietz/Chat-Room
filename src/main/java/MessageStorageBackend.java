@@ -9,4 +9,10 @@ public class MessageStorageBackend {
         throw new RuntimeException("Method not Implemented");
     }
 
+    Message removeMessage(long msg_id){
+        throw new RuntimeException("Method not Implemented");
+    }
+
+
+
 }
