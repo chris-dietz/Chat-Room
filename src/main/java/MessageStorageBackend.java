@@ -23,9 +23,14 @@ public class MessageStorageBackend {
             n=messages.size();
         }
 
+        if(messages.size() == 0){
+            return toReturn;
+        }
+
         for(int i = 1; i<= n ; i++){
             toReturn.add(messages.get(messages.size()-i));
         }
+
         return toReturn;
     }
 
