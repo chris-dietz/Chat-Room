@@ -7,6 +7,10 @@ import spark.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 class ServerError {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String errorCode;
@@ -20,12 +24,15 @@ class ServerError {
 }
 
 public class RestfulServer {
+
     @SuppressWarnings("unused")
     private final Logger log = LoggerFactory.getLogger(RestfulServer.class);
+    private final MessageStorageBackend group_messages;
     // Default constructor for RestfulServer
     public RestfulServer() {
         this.configureRestfulApiServer();
         this.processRestfulApiRequests();
+        group_messages = new MessageStorageBackend();
     }
 
     // Starts REST-ful API on port 8080
@@ -38,8 +45,9 @@ public class RestfulServer {
     private void processRestfulApiRequests() {
         Spark.get("/", this::echoRequest); // Uses root path and calls echoRequest
         Spark.post("/", this::echoRequest);
-        Spark.post("/send_chat", this::processChatMessage);
+        Spark.post("/send_chat", this::processIncomingChatMessage);
         Spark.get("/chat",this::processGetRequest);
+        Spark.get("/retrieve_messages",this::processRetrievingMessages);
        // Spark.put("/",this::echoRequest);
        // Spark.patch("/", this::echoRequest);
        // Spark.head("/", this::echoRequest);
@@ -68,7 +76,8 @@ public class RestfulServer {
         return gson.toJson(err);
     }
 
-    private String processChatMessage(Request request, Response response){
+    private String processIncomingChatMessage(Request request, Response response){
+
         response.type("application/json"); // Output response as JSON
         response.header("Access-Control-Allow-Origin", "*"); //Set to wildcard to share with any calling code
         response.status(200); // Reports an OK status
@@ -99,6 +108,7 @@ public class RestfulServer {
             System.out.println("body: "+ newMessage.getBody());
             System.out.println("thread: "+ newMessage.getThread());
             System.out.println("msg_id: "+newMessage.getMsgId());
+            group_messages.insertMessage(newMessage);
             return gson.toJson(newMessage);
         }
         else{
@@ -108,6 +118,42 @@ public class RestfulServer {
 
 
     }
+    /*
+     * Processes get request to retrieve messages
+     * Looks for the count or since_id parameters in the request and calls their corresponding methods
+     * Precedence is given to count if both are specified (DON'T DO THAT)
+     */
+
+    private String processRetrievingMessages(Request request, Response response){
+        response.type("application/json"); // Output response as JSON
+        response.header("Access-Control-Allow-Origin", "*");
+        Set<String> params = request.queryParams();
+        List<Message> messageList;
+        if(params.contains("count")){
+            try {
+                messageList = group_messages.getLastNMessages(Integer.parseInt(request.queryParams("count")));
+            }catch (NumberFormatException ex){
+                response.status(400);
+                return getHTTPError("400", "Invalid Parameters in GET Request");
+            }
+        }
+        else if(params.contains("since_id")){
+            try{
+                messageList = group_messages.getMessagesPostedSince(Long.parseLong(request.queryParams("since_id")));
+            }catch (NumberFormatException ex){
+                response.status(400);
+                return getHTTPError("400", "Invalid Parameters in GET Request");
+            }
+        }
+        else{
+            response.status(400);
+            return getHTTPError("400", "Invalid Parameters in GET Request");
+        }
+        Gson gson = new Gson();
+        return gson.toJson(messageList);
+
+    }
+
     private String processGetRequest(Request request, Response response){
         response.type("application/json"); // Output response as JSON
         response.header("Access-Control-Allow-Origin", "*"); //Set to wildcard to share with any calling code
