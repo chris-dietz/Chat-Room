@@ -4,11 +4,8 @@ import com.google.gson.JsonSyntaxException;
 import spark.Spark;
 import spark.Request;
 import spark.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 class ServerError {
@@ -23,10 +20,9 @@ class ServerError {
     }
 }
 
+@lombok.extern.slf4j.Slf4j
 public class RestfulServer {
 
-    @SuppressWarnings("unused")
-    private final Logger log = LoggerFactory.getLogger(RestfulServer.class);
     private final MessageStorageBackend group_messages;
     // Default constructor for RestfulServer
     public RestfulServer() {
