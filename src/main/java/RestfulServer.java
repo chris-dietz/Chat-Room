@@ -84,7 +84,6 @@ public class RestfulServer {
         String json_body = request.body();
         Gson gson = new Gson();
         JsonObject msgJson;
-        //Todo: Change this so that it calls the message constructor instead of deserializing directly, use JsonObject from gson. Also figure out how to make an object of the correct subclass.
         try {
              msgJson = gson.fromJson(json_body, JsonObject.class);
         }catch (JsonSyntaxException e){
