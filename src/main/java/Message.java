@@ -15,14 +15,15 @@ public abstract class Message {
     private final String type;
     private final String timestamp;
 
-    public Message(String type,String from, String subject, String body, String thread) {
+    public Message(String type,String from, String subject, String body, String thread, long msgId) {
         this.type = type;
         this.from = from;
         this.subject = subject;
         this.body = body;
         this.thread = thread;
-        SecureRandom rng = new SecureRandom();
-        msgId = Math.abs(rng.nextLong());
+        //SecureRandom rng = new SecureRandom();
+        this.msgId = msgId;
+
         timestamp = ZonedDateTime.now( ZoneOffset.UTC ).truncatedTo( ChronoUnit.SECONDS).format( DateTimeFormatter.ISO_INSTANT );
     }
 
