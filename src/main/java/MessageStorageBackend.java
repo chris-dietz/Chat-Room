@@ -79,6 +79,11 @@ public class MessageStorageBackend {
         return null;
     }
 
+    /**
+     * Returns the next sequential Message id and increments nextMsgId
+     * Should NEVER return the same number twice.
+     * @return Next Message id.
+     */
     public long getNextMsgId(){
         long currentMsgId = nextMsgId;
         nextMsgId++;
