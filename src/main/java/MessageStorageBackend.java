@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class MessageStorageBackend {
-    List<Message> messages;
+    private final List<Message> messages;
 
     MessageStorageBackend(){
         messages = new ArrayList<>(128);
