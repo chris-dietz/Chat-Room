@@ -17,6 +17,7 @@ public class MessageStorageBackend {
 
     /*
      * Returns the last N messages posted to the chat room.
+     *
      */
    public List<Message> getLastNMessages(int n){
         ArrayList<Message> toReturn = new ArrayList<>(n);
@@ -38,7 +39,7 @@ public class MessageStorageBackend {
     /*
      * Returns all messages posted since a specified message id
      * If the message id doesn't exist it returns all messages
-     *
+     * Excludes message with matching ID
      */
    public List<Message> getMessagesPostedSince(long msg_id){
         ArrayList<Message> toReturn = new ArrayList<>();
@@ -53,6 +54,7 @@ public class MessageStorageBackend {
             toReturn.add(current);
             n++;
         }
+        toReturn.remove(toReturn.size()-1);
         return toReturn;
     }
 
