@@ -33,12 +33,13 @@ public class RestfulServer {
 
     // Starts REST-ful API on port 8080
     private void configureRestfulApiServer() {
-        Spark.port(80); // Starts Spark MicroServer
+        Spark.port(8080); // Starts Spark MicroServer
         System.out.println("Server Configured to listen on port 8080");
     }
 
     // Configures Spark's REST-ful API routes
     private void processRestfulApiRequests() {
+        Spark.staticFiles.location("/webapp"); // Sets where files are going to be viewed from
         Spark.get("/", this::echoRequest); // Uses root path and calls echoRequest
         Spark.post("/", this::echoRequest);
         Spark.post("/send_chat", this::processIncomingChatMessage);
@@ -124,6 +125,10 @@ public class RestfulServer {
         response.header("Access-Control-Allow-Origin", "*");
         Set<String> params = request.queryParams();
         List<Message> messageList;
+
+        System.out.println(params);
+        System.out.println(response);
+
         if(params.contains("count")){
             try {
                 messageList = group_messages.getLastNMessages(Integer.parseInt(request.queryParams("count")));
