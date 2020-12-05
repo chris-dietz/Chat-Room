@@ -33,12 +33,13 @@ public class RestfulServer {
 
     // Starts REST-ful API on port 8080
     private void configureRestfulApiServer() {
-        Spark.port(80); // Starts Spark MicroServer
+        Spark.port(8080); // Starts Spark MicroServer
         System.out.println("Server Configured to listen on port 8080");
     }
 
     // Configures Spark's REST-ful API routes
     private void processRestfulApiRequests() {
+        Spark.staticFiles.location("/webapp"); // Sets where files are going to be viewed from
         Spark.get("/", this::echoRequest); // Uses root path and calls echoRequest
         Spark.post("/", this::echoRequest);
         Spark.post("/send_chat", this::processIncomingChatMessage);
