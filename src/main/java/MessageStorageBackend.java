@@ -9,15 +9,16 @@ import java.util.List;
 
 public class MessageStorageBackend {
     private final List<Message> messages;
-
-    MessageStorageBackend(){
+    private long nextMsgId;
+    public MessageStorageBackend(){
         messages = new ArrayList<>(128);
+        nextMsgId = 0;
     }
 
     /*
      * Returns the last N messages posted to the chat room.
      */
-    List<Message> getLastNMessages(int n){
+   public List<Message> getLastNMessages(int n){
         ArrayList<Message> toReturn = new ArrayList<>(n);
         if(n > messages.size()){ //Handle n being greater than the total number of messages by setting it to the max if it exceeds it.
             n=messages.size();
@@ -39,7 +40,7 @@ public class MessageStorageBackend {
      * If the message id doesn't exist it returns all messages
      *
      */
-    List<Message> getMessagesPostedSince(long msg_id){
+   public List<Message> getMessagesPostedSince(long msg_id){
         ArrayList<Message> toReturn = new ArrayList<>();
         if(messages.size() == 0){
             return toReturn;
@@ -55,11 +56,11 @@ public class MessageStorageBackend {
         return toReturn;
     }
 
-    boolean insertMessage(Message m) {
+    public boolean insertMessage(Message m) {
         return messages.add(m);
     }
 
-    Message getMessage(long msg_id){
+    public Message getMessage(long msg_id){
         for(Message m: messages){
             if(m.getMsgId() == msg_id){
                 return m;
@@ -68,7 +69,7 @@ public class MessageStorageBackend {
         return null;
     }
 
-    Message removeMessage(long msg_id){
+    public Message removeMessage(long msg_id){
         for(Message m: messages){
             if(m.getMsgId() == msg_id){
                 messages.remove(m);
@@ -76,6 +77,12 @@ public class MessageStorageBackend {
             }
         }
         return null;
+    }
+
+    public long getNextMsgId(){
+        long currentMsgId = nextMsgId;
+        nextMsgId++;
+        return currentMsgId;
     }
 
 
