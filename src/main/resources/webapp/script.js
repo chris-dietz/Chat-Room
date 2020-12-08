@@ -38,7 +38,7 @@ function createProfile() {
         success:      function() { two(); },
         error:        function(error) { /*window.location.replace("invalid.html");*/ }
     });
-//    window.alert(data);
+    window.alert("Your message has been sent!");
 }
 
 function nextIndexOf(strToIndex, index, char) {
