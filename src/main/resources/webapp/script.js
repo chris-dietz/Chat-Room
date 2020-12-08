@@ -28,7 +28,6 @@ function createProfile() {
     endingPoint = nextIndexOf(JSON.stringify(data), startingPoint, "\"");
     var room = JSON.stringify(data).substring(startingPoint, endingPoint);
     data = "{ \"type\":\"group_message\", \"from\":\"" + from + "\", \"subject\":\"" + subject + "\", \"body\":\"" + body + "\", \"thread\":\"" + thread + "\", \"room\":\"" + room + "\"}";
-//    window.alert(data);
 
     $.ajax({
         url:         'http://localhost:8080/send_chat',
