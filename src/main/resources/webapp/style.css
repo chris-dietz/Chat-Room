@@ -29,6 +29,11 @@ body, html {
   color: white;
 }
 
+/*  */
+.hero-text a {
+  color: white;
+}
+
 
 /* Add a black color to the navigation bar (the non-green color) */
 .nav {
