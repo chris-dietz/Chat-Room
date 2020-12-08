@@ -8,16 +8,18 @@ import java.util.List;
  */
 
 public class MessageStorageBackend {
-    List<Message> messages;
-
-    MessageStorageBackend(){
+    private final List<Message> messages;
+    private long nextMsgId;
+    public MessageStorageBackend(){
         messages = new ArrayList<>(128);
+        nextMsgId = 0;
     }
 
     /*
      * Returns the last N messages posted to the chat room.
+     *
      */
-    List<Message> getLastNMessages(int n){
+   public List<Message> getLastNMessages(int n){
         ArrayList<Message> toReturn = new ArrayList<>(n);
         if(n > messages.size()){ //Handle n being greater than the total number of messages by setting it to the max if it exceeds it.
             n=messages.size();
@@ -37,9 +39,9 @@ public class MessageStorageBackend {
     /*
      * Returns all messages posted since a specified message id
      * If the message id doesn't exist it returns all messages
-     *
+     * Excludes message with matching ID
      */
-    List<Message> getMessagesPostedSince(long msg_id){
+   public List<Message> getMessagesPostedSince(long msg_id){
         ArrayList<Message> toReturn = new ArrayList<>();
         if(messages.size() == 0){
             return toReturn;
@@ -52,14 +54,15 @@ public class MessageStorageBackend {
             toReturn.add(current);
             n++;
         }
+        toReturn.remove(toReturn.size()-1);
         return toReturn;
     }
 
-    boolean insertMessage(Message m) {
+    public boolean insertMessage(Message m) {
         return messages.add(m);
     }
 
-    Message getMessage(long msg_id){
+    public Message getMessage(long msg_id){
         for(Message m: messages){
             if(m.getMsgId() == msg_id){
                 return m;
@@ -68,7 +71,7 @@ public class MessageStorageBackend {
         return null;
     }
 
-    Message removeMessage(long msg_id){
+    public Message removeMessage(long msg_id){
         for(Message m: messages){
             if(m.getMsgId() == msg_id){
                 messages.remove(m);
@@ -76,6 +79,17 @@ public class MessageStorageBackend {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the next sequential Message id and increments nextMsgId
+     * Should NEVER return the same number twice.
+     * @return Next Message id.
+     */
+    public long getNextMsgId(){
+        long currentMsgId = nextMsgId;
+        nextMsgId++;
+        return currentMsgId;
     }
 
 
