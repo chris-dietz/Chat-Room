@@ -13,6 +13,10 @@ public class UserStorageBackend {
         users = new ArrayList<>();
     }
 
+    public void addUser(User u){
+        users.add(u);
+    }
+
     /*
     retrieves a given user by name
      */

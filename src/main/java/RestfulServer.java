@@ -4,9 +4,9 @@ import com.google.gson.JsonSyntaxException;
 import spark.Spark;
 import spark.Request;
 import spark.Response;
-
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 class ServerError {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -24,11 +24,13 @@ class ServerError {
 public class RestfulServer {
 
     private final MessageStorageBackend group_messages;
+    private final UserStorageBackend users;
     // Default constructor for RestfulServer
     public RestfulServer() {
         this.configureRestfulApiServer();
         this.processRestfulApiRequests();
         group_messages = new MessageStorageBackend();
+        users = new UserStorageBackend();
     }
 
     // Starts REST-ful API on port 8080
@@ -45,6 +47,7 @@ public class RestfulServer {
         Spark.post("/send_chat", this::processIncomingChatMessage);
         Spark.get("/chat",this::processGetRequest);
         Spark.get("/retrieve_messages",this::processRetrievingMessages);
+        Spark.post("/register_user",this::registerNewUser);
        // Spark.put("/",this::echoRequest);
        // Spark.patch("/", this::echoRequest);
        // Spark.head("/", this::echoRequest);
@@ -123,6 +126,7 @@ public class RestfulServer {
     private String processRetrievingMessages(Request request, Response response){
         response.type("application/json"); // Output response as JSON
         response.header("Access-Control-Allow-Origin", "*");
+        response.status(200);
         Set<String> params = request.queryParams();
         List<Message> messageList;
 
@@ -154,8 +158,41 @@ public class RestfulServer {
 
     }
 
+    private String setAuthCookie(Response response){
+        UUID auth = UUID.randomUUID();
+        response.cookie("/","auth",auth.toString(),3600,false,true);
+        return auth.toString();
+    }
+
     private String registerNewUser(Request request, Response response){
-        return "";
+        response.type("application/json");
+        response.header("Access-Control-Allow-Origin", "*");
+        response.status(200);
+        String jsonBody = request.body();
+        Gson gson = new Gson();
+        JsonObject userJson;
+        try {
+            userJson = gson.fromJson(jsonBody, JsonObject.class);
+        }catch (JsonSyntaxException e){
+            response.status(400);
+            return getHTTPError("400", "Invalid JSON Data");
+        }
+        if(userJson.has("name")){
+            String name = userJson.get("name").getAsString();
+            if(users.getUserFromName(name) != null){
+                response.status(403);
+                return getHTTPError("403","User had already been registered");
+            }
+            String auth_cookie = setAuthCookie(response);
+            User newUser = new User(userJson.get("name").getAsString(),auth_cookie);
+
+            users.addUser(newUser);
+            return gson.toJson(newUser);
+        }
+        else {
+            response.status(400);
+            return getHTTPError("400","Invalid user data, missing name field");
+        }
     }
 
     private String processGetRequest(Request request, Response response){
