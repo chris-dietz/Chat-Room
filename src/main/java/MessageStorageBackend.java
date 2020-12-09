@@ -43,18 +43,17 @@ public class MessageStorageBackend {
      */
    public List<Message> getMessagesPostedSince(long msg_id){
         ArrayList<Message> toReturn = new ArrayList<>();
-        if(messages.size() <= 1){
+        if(messages.size() == 0){
             return toReturn;
         }
-
         Message current = messages.get(messages.size()-1);
-        int n = 0;
+        int n = 1;
         while (n<messages.size() && current.getMsgId() != msg_id){
-            current = messages.get(messages.size()-1-n);
             toReturn.add(current);
+            current = messages.get(messages.size()-1-n);
             n++;
         }
-        toReturn.remove(toReturn.size()-1);
+        //toReturn.remove(toReturn.size()-1);
         return toReturn;
     }
 

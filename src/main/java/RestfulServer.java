@@ -52,7 +52,7 @@ public class RestfulServer {
        // Spark.patch("/", this::echoRequest);
        // Spark.head("/", this::echoRequest);
        // Spark.delete("/", this::echoRequest);
-        
+
     }
 
     // Called by Spark.get, can be called anything. Must return a String and take Request & Response args
