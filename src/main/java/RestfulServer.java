@@ -99,6 +99,11 @@ public class RestfulServer {
             return getHTTPError("400", "Invalid Chat message, missing type field");
         }
 
+        if(!checkIfUserIsAllowed(msgJson.get("from").getAsString(),request)){
+            response.status(401);
+            return getHTTPError("401","Invalid auth token for given user");
+        }
+
 
         if(type.equals("group_message") && msgJson.has("from") && msgJson.has("subject") && msgJson.has("body") && msgJson.has("thread") && msgJson.has("room")){
             GroupMessage newMessage = new GroupMessage(msgJson.get("from").getAsString(),msgJson.get("subject").getAsString(),msgJson.get("body").getAsString(),msgJson.get("thread").getAsString(),msgJson.get("room").getAsString(),group_messages.getNextMsgId()); //Construct new Group Message Object
@@ -108,10 +113,7 @@ public class RestfulServer {
             System.out.println("thread: "+ newMessage.getThread());
             System.out.println("msg_id: "+newMessage.getMsgId());
 
-            if(!checkIfUserIsAllowed(newMessage.getFrom(),request)){
-                response.status(401);
-                return getHTTPError("401","Invalid auth token for given user");
-            }
+
 
             group_messages.insertMessage(newMessage);
             return gson.toJson(newMessage);
