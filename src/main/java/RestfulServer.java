@@ -107,6 +107,12 @@ public class RestfulServer {
             System.out.println("body: "+ newMessage.getBody());
             System.out.println("thread: "+ newMessage.getThread());
             System.out.println("msg_id: "+newMessage.getMsgId());
+
+            if(!checkIfUserIsAllowed(newMessage.getFrom(),request)){
+                response.status(401);
+                return getHTTPError("401","Invalid auth token for given user");
+            }
+
             group_messages.insertMessage(newMessage);
             return gson.toJson(newMessage);
         }
@@ -117,6 +123,16 @@ public class RestfulServer {
 
 
     }
+
+    private boolean checkIfUserIsAllowed(String name, Request request){
+
+        if(request.cookies().containsKey("auth")) {
+            String cookie = request.cookie("auth");
+            return users.isCookieValid(name, cookie);
+        }
+        return false;
+    }
+
     /*
      * Processes get request to retrieve messages
      * Looks for the count or since_id parameters in the request and calls their corresponding methods
@@ -163,6 +179,15 @@ public class RestfulServer {
         response.cookie("/","auth",auth.toString(),3600,false,true);
         return auth.toString();
     }
+
+    /**
+     * Invoked with the register_user post request
+     * Takes json data with a name field which is then used to add as a valid user and a authentication cookie is returned.
+     * This must be done before messages can be sent. Returns 401 if a user with the given username already exists.
+     * @param request
+     * @param response
+     * @return an Json encoded user object
+     */
 
     private String registerNewUser(Request request, Response response){
         response.type("application/json");
