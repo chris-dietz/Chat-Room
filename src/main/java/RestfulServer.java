@@ -185,7 +185,7 @@ public class RestfulServer {
     /**
      * Invoked with the register_user post request
      * Takes json data with a name field which is then used to add as a valid user and a authentication cookie is returned.
-     * This must be done before messages can be sent. Returns 401 if a user with the given username already exists.
+     * This must be done before messages can be sent. Returns 403 if a user with the given username already exists.
      * @param request
      * @param response
      * @return an Json encoded user object

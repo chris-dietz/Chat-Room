@@ -43,7 +43,7 @@ public class MessageStorageBackend {
      */
    public List<Message> getMessagesPostedSince(long msg_id){
         ArrayList<Message> toReturn = new ArrayList<>();
-        if(messages.size() == 0){
+        if(messages.size() <= 1){
             return toReturn;
         }
 
