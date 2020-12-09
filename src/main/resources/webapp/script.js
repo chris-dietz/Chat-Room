@@ -16,7 +16,7 @@ function postMessage() {
     startingPoint = JSON.stringify(data).indexOf("room") + 11 + "room".length;
     endingPoint = nextIndexOf(JSON.stringify(data), startingPoint, "\"");
     var room = JSON.stringify(data).substring(startingPoint, endingPoint);
-    data = "{ \"type\":\"group_message\", \"from\":\"" + document.cookie + "\", \"subject\":\"" + subject + "\", \"body\":\"" + body + "\", \"thread\":\"" + thread + "\", \"room\":\"" + room + "\"}";
+    data = "{ \"type\":\"group_message\", \"from\":\"" + document.cookie + "\", \"subject\":\"" + subject + "\", \"body\":\"" + body + "\", \"thread\":\"" + "thread" + "\", \"room\":\"" + "room" + "\"}";
 
     $.ajax({
         url:      'http://localhost:8080/send_chat',
