@@ -1,17 +1,17 @@
 public class User {
     private final String name;
-    private final String sessionCookie;
+    private final String authCookie;
 
-    public User(String name, String sessionCookie) {
+    public User(String name, String authCookie) {
         this.name = name;
-        this.sessionCookie = sessionCookie;
+        this.authCookie = authCookie;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getSessionCookie() {
-        return sessionCookie;
+    public String getAuthCookie() {
+        return authCookie;
     }
 }

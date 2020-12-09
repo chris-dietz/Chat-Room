@@ -36,7 +36,7 @@ public class UserStorageBackend {
             return false;
         }
         //System.out.println("Comparing :" + toCheck.getSessionCookie() + "to" + cookie);
-        return toCheck.getSessionCookie().equals(cookie);
+        return toCheck.getAuthCookie().equals(cookie);
     }
 
 }
