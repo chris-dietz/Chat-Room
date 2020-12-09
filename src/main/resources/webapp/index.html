@@ -1,0 +1,32 @@
+<html lang="en" dir="ltr">
+<head>
+  <title>Home</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+  <div class="hero-image">
+    <div class="hero-text">
+      <h1>Webpage</h1>
+      <p>Developed by <a href="https://github.com/tjhamlet" target="_blank">Tyler Craig</a>, <a href="https://github.com/vengefulsystems" target="_blank">Christopher Dietz</a>, and <a href="https://github.com/cbrock22" target="_blank">Cole Brock</a></p>
+    </div>
+  </div>
+  <div class="nav">
+    <a class="active" href="index.html">Home</a> <!-- class active shows selected tab -->
+    <a href="retrieve_messages?since_id=0">Update Chat</a>
+    <a onclick="eleven()">Toggle Hello World!</a>
+  </div>
+  <div class="content">
+    <p id="demo">Hello World!</p>
+    <form onsubmit="createProfile()" id="registrationForm">
+      from    : <input type="text" name="from" /> <br />
+      subject : <input type="text" name="subject" /> <br />
+      body    : <input type="text" name="body" /> <br />
+      thread  : <input type="text" name="thread" /> <br />
+      room    : <input type="text" name="room" /> <br />
+      <input type="submit" value="Submit" />
+    </form>
+  </div>
+</body>
+</html>
