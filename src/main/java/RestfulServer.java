@@ -154,6 +154,10 @@ public class RestfulServer {
 
     }
 
+    private String registerNewUser(Request request, Response response){
+        return "";
+    }
+
     private String processGetRequest(Request request, Response response){
         response.type("application/json"); // Output response as JSON
         response.header("Access-Control-Allow-Origin", "*"); //Set to wildcard to share with any calling code
