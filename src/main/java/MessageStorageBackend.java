@@ -6,7 +6,7 @@ import java.util.List;
  * For now implemented with non persistent storage, plan to migrate to
  * MySQL database in the future
  */
-
+// This is coles comment
 public class MessageStorageBackend {
     private final List<Message> messages;
     private long nextMsgId;
