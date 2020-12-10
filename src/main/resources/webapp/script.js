@@ -57,7 +57,7 @@ function formatAllMessages(input) {
     var inputParsed = JSON.parse(input);
     var output = "";
     inputParsed.forEach((msg) => {
-        output = output + formatAMessage(JSON.stringify(msg)) + "<br>";
+        output = formatAMessage(JSON.stringify(msg)) + "<br>" + output;
     });
 //    window.alert(output);
     return output;
