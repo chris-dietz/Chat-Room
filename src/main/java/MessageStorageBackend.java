@@ -38,7 +38,7 @@ public class MessageStorageBackend {
 
     /*
      * Returns all messages posted since a specified message id
-     * If the message id doesn't exist it returns all messages
+     * If the message id doesn't exist it returns nothing
      * Excludes message with matching ID
      */
    public List<Message> getMessagesPostedSince(long msg_id){
@@ -53,6 +53,11 @@ public class MessageStorageBackend {
             current = messages.get(messages.size()-1-n);
             n++;
         }
+
+        if(current.getMsgId() != msg_id){
+            return new ArrayList<>();
+        }
+
         //toReturn.remove(toReturn.size()-1);
         return toReturn;
     }
