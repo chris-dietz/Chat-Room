@@ -148,9 +148,6 @@ public class RestfulServer {
         Set<String> params = request.queryParams();
         List<Message> messageList;
 
-        System.out.println(params);
-        System.out.println(response);
-
         if(params.contains("count")){
             try {
                 messageList = group_messages.getLastNMessages(Integer.parseInt(request.queryParams("count")));
