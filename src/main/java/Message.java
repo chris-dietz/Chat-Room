@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-public abstract class Message {
+public class Message {
     private final String from;
     private final String subject;
     private final String body;
@@ -14,8 +14,9 @@ public abstract class Message {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String type;
     private final String timestamp;
+    private final String room;
 
-    public Message(String type,String from, String subject, String body, String thread, long msgId) {
+    public Message(String type,String from, String subject, String body, String thread,String room, long msgId) {
         this.type = type;
         this.from = from;
         this.subject = subject;
@@ -23,6 +24,7 @@ public abstract class Message {
         this.thread = thread;
         //SecureRandom rng = new SecureRandom();
         this.msgId = msgId;
+        this.room = room;
 
         timestamp = ZonedDateTime.now( ZoneOffset.UTC ).truncatedTo( ChronoUnit.SECONDS).format( DateTimeFormatter.ISO_INSTANT );
     }

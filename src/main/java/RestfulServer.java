@@ -106,7 +106,7 @@ public class RestfulServer {
 
 
         if(type.equals("group_message") && msgJson.has("from") && msgJson.has("subject") && msgJson.has("body") && msgJson.has("thread") && msgJson.has("room")){
-            GroupMessage newMessage = new GroupMessage(msgJson.get("from").getAsString(),msgJson.get("subject").getAsString(),msgJson.get("body").getAsString(),msgJson.get("thread").getAsString(),msgJson.get("room").getAsString(),group_messages.getNextMsgId()); //Construct new Group Message Object
+            Message newMessage = new Message(type,msgJson.get("from").getAsString(),msgJson.get("subject").getAsString(),msgJson.get("body").getAsString(),msgJson.get("thread").getAsString(),msgJson.get("room").getAsString(),group_messages.getNextMsgId()); //Construct new Group Message Object
             System.out.println("from: "+newMessage.getFrom());
             System.out.println("subject: "+ newMessage.getSubject());
             System.out.println("body: "+ newMessage.getBody());
@@ -226,7 +226,7 @@ public class RestfulServer {
         response.type("application/json"); // Output response as JSON
         response.header("Access-Control-Allow-Origin", "*"); //Set to wildcard to share with any calling code
         response.status(200); // Reports an OK status
-        GroupMessage msg = new GroupMessage("testbot","Hello World", "I'm the body","1","main",0);
+        Message msg = new Message("group_message","testbot","Hello World", "I'm the body","1","main",0);
         Gson gson = new Gson();
         return gson.toJson(msg);
     }
