@@ -1,9 +1,9 @@
 <html lang="en" dir="ltr">
 <head>
   <title>Home</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" src="script.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css"> <!--  CSS style is in style.css   -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!--  include Ajax and jQuery   -->
+  <script type="text/javascript" src="script.js"></script> <!--   JavaScript is in script.js   -->
 </head>
 <body onload="setupChat();">
   <div class="hero-image">
@@ -14,15 +14,13 @@
   </div>
   <div class="nav">
     <a class="active" href="index.html">Home</a> <!-- class active shows selected tab -->
-    <a href="retrieve_messages?count=10">Update Chat</a>
+    <a onclick="updateChat();">Update Chat</a>
   </div>
   <div class="content">
-    <p id="demo">Hello World!</p>
+    <p id="MessageHistory">No messages sent</p>
     <form onsubmit="postMessage()" id="registrationForm">
-      subject : <input type="text" autocomplete="false" name="subject" pattern="[a-zA-Z0-9!.?<>/*@&]{0,128}"/> <br />
-      body    : <input type="text" autocomplete="false" name="body" pattern="[a-zA-Z0-9!.?<>/*@&]{0,128}"/> <br />
-      thread  : <input type="text" autocomplete="false" name="thread" pattern="[a-zA-Z0-9!.?<>/*@&]{0,128}"/> <br />
-      room    : <input type="text" autocomplete="false" name="room" pattern="[a-zA-Z0-9!.?<>/*@&]{0,128}"/> <br />
+      subject : <input type="text" autocomplete="false" name="subject" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/> <br />
+      body    : <input type="text" autocomplete="false" name="body" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/> <br />
       <input type="submit" value="Submit"/>
     </form>
   </div>

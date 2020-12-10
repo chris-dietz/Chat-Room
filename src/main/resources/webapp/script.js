@@ -8,16 +8,7 @@ function postMessage() {
     startingPoint = JSON.stringify(data).indexOf("body") + 11 + "body".length;
     endingPoint = nextIndexOf(JSON.stringify(data), startingPoint, "\"");
     var body = JSON.stringify(data).substring(startingPoint, endingPoint);
-
-    startingPoint = JSON.stringify(data).indexOf("thread") + 11 + "thread".length;
-    endingPoint = nextIndexOf(JSON.stringify(data), startingPoint, "\"");
-    var thread = JSON.stringify(data).substring(startingPoint, endingPoint);
-
-    startingPoint = JSON.stringify(data).indexOf("room") + 11 + "room".length;
-    endingPoint = nextIndexOf(JSON.stringify(data), startingPoint, "\"");
-    var room = JSON.stringify(data).substring(startingPoint, endingPoint);
-    data = "{ \"type\":\"group_message\", \"from\":\"" + document.cookie + "\", \"subject\":\"" + subject + "\", \"body\":\"" + body + "\", \"thread\":\"" + "thread" + "\", \"room\":\"" + "room" + "\"}";
-
+    data = "{\"type\":\"group_message\", \"from\":\"" + document.cookie + "\", \"subject\":\"" + subject + "\", \"body\":\"" + body + "\", \"thread\":\"" + "thread" + "\", \"room\":\"" + "room" + "\"}";
     $.ajax({
         url:      'http://localhost:8080/send_chat',
         method:   'POST',
@@ -26,7 +17,7 @@ function postMessage() {
         success:  function() { },
         error:    function(error) { }
     });
-    window.alert("Your message has been sent!");
+    window.alert("Sending...");
 }
 
 function nextIndexOf(strToIndex, index, char) {
@@ -35,16 +26,55 @@ function nextIndexOf(strToIndex, index, char) {
 }
 
 function setupChat() {
-    if(document.cookie == "") { // If no cookies exits
+    var Http = new XMLHttpRequest(); // creates a new HttpRequest Object
+
+    if(document.cookie == "") { // if no cookies exits
         var name = prompt("What is your name?", "John Doe");
+        Http.open("POST", '/register_user');
+        data = "{\"name\"=\"" + name + "\"}";
+        Http.send(data);
         document.cookie = name;
     }
-    const Http = new XMLHttpRequest();
-    const url='retrieve_messages?count=10';
+    updateChat();
+}
+
+function updateChat() {
+    var Http = new XMLHttpRequest(); // creates a new HttpRequest Object
+    var url='retrieve_messages?count=10';
     Http.open("GET", url);
     Http.send();
-
     Http.onreadystatechange = (e) => {
-      document.getElementById("demo").innerHTML = Http.responseText; //Unformmatted Past 10 Messages
+        if(Http.responseText != "[]") { // if not blank
+//            document.getElementById("MessageHistory").innerHTML = Http.responseText; //Unformatted Past 10 Messages
+            document.getElementById("MessageHistory").innerHTML = formatAllMessages(Http.responseText);
+        }
+        else
+            document.getElementById("MessageHistory").innerHTML = "No messages sent";
     }
+}
+
+function formatAllMessages(input) {
+    var inputParsed = JSON.parse(input);
+    var output = "";
+    inputParsed.forEach((msg) => {
+        output = output + formatAMessage(JSON.stringify(msg)) + "<br>";
+    });
+//    window.alert(output);
+    return output;
+}
+
+function formatAMessage(input, startingIndex = 0) {
+    var index = nextIndexOf(input, startingIndex, "from") + 3 + 4;
+    var from = input.substring(index, nextIndexOf(input, index, "\""))
+    index = nextIndexOf(input, startingIndex, "subject") + 3 + 7;
+    var subject = input.substring(index, nextIndexOf(input, index, "\""))
+    index = nextIndexOf(input, startingIndex, "body") + 3 + 4;
+    var body = input.substring(index, nextIndexOf(input, index, "\""))
+    index = nextIndexOf(input, startingIndex, "timestamp") + 3 + 9;
+    var timestamp = input.substring(index + 12, nextIndexOf(input, index, "Z\""))
+
+    var output = from + " @ " + timestamp + ": " + body + "\n";
+    if(subject != "")
+        output = from + " @ " + timestamp + ": " + subject + " - " + body + "\n";
+    return output;
 }
