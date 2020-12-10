@@ -66,7 +66,25 @@ public class MessageStorageBackend {
     }
 
     public boolean insertMessage(Message m) {
-
+       Connection c = connection;
+        try {
+            String sql = "INSERT INTO message_history(from, subject, body, thread, msgId, type, timestamp, room)";
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setString(1, m.getFrom());
+            statement.setString(2, m.getSubject());
+            statement.setString(3, m.getBody());
+            statement.setString(4, ""); // Null because we did not end up using data field
+            statement.setLong(5, m.getMsgId());
+            statement.setString(6, m.getType());
+            statement.setString(7, m.getTimestamp());
+            statement.setString(8, ""); // Null because we did not end up using data field
+            c.close();
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
        return messages.add(m);
     }
 
@@ -108,9 +126,9 @@ public class MessageStorageBackend {
         stmt = conn.createStatement();
         String makedb = "CREATE DATABASE chat_history;";
         stmt.executeUpdate(makedb);
-        String usedb = "USE chat_history";
+        String usedb = "USE chat_history;";
         stmt.executeUpdate(usedb);
-        String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId TEXT, mtype TEXT, mtimestamp TEXT, mroom TEXT);";
+        String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId LONG, mtype TEXT, mtimestamp TEXT, mroom TEXT);";
         stmt.executeUpdate(makemessagetable);
         String makeusertable = "CREATE TABLE user_history(usersname TEXT, cookies TEXT);";
         stmt.executeUpdate(makeusertable);
