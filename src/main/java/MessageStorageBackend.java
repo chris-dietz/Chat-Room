@@ -11,10 +11,11 @@ import java.sql.*;
 public class MessageStorageBackend {
     private final List<Message> messages;
     private long nextMsgId;
+    Connection connection = null;
     public MessageStorageBackend(){
         messages = new ArrayList<>(128);
         nextMsgId = 0;
-        createDatabase();
+        connection = createDatabase();
     }
 
     /*
@@ -65,7 +66,8 @@ public class MessageStorageBackend {
     }
 
     public boolean insertMessage(Message m) {
-        return messages.add(m);
+
+       return messages.add(m);
     }
 
     public Message getMessage(long msg_id){
@@ -98,7 +100,7 @@ public class MessageStorageBackend {
         return currentMsgId;
     }
 
-    public void createDatabase(){
+    public Connection createDatabase(){
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -106,18 +108,20 @@ public class MessageStorageBackend {
         stmt = conn.createStatement();
         String makedb = "CREATE DATABASE chat_history;";
         stmt.executeUpdate(makedb);
+        String usedb = "USE chat_history";
+        stmt.executeUpdate(usedb);
         String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId TEXT, mtype TEXT, mtimestamp TEXT, mroom TEXT);";
         stmt.executeUpdate(makemessagetable);
         String makeusertable = "CREATE TABLE user_history(usersname TEXT, cookies TEXT);";
         stmt.executeUpdate(makeusertable);
         stmt.close();
-        conn.close();
         }
         catch(SQLException e){
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         }
+        return conn;
     }
 
 
