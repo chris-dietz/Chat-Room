@@ -110,6 +110,8 @@ public class MessageStorageBackend {
         stmt.executeUpdate(makemessagetable);
         String makeusertable = "CREATE TABLE user_history(usersname TEXT, cookies TEXT);";
         stmt.executeUpdate(makeusertable);
+        stmt.close();
+        conn.close();
         }
         catch(SQLException e){
             System.out.println("SQLException: " + e.getMessage());
