@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 
 /**
  * High level abstraction for backend persistent storage,
@@ -13,6 +14,7 @@ public class MessageStorageBackend {
     public MessageStorageBackend(){
         messages = new ArrayList<>(128);
         nextMsgId = 0;
+        createDatabase();
     }
 
     /*
@@ -94,6 +96,26 @@ public class MessageStorageBackend {
         long currentMsgId = nextMsgId;
         nextMsgId++;
         return currentMsgId;
+    }
+
+    public void createDatabase(){
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
+        stmt = conn.createStatement();
+        String makedb = "CREATE DATABASE chat_history;";
+        stmt.executeUpdate(makedb);
+        String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId TEXT, mtype TEXT, mtimestamp TEXT, mroom TEXT);";
+        stmt.executeUpdate(makemessagetable);
+        String makeusertable = "CREATE TABLE user_history(usersname TEXT, cookies TEXT);";
+        stmt.executeUpdate(makeusertable);
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
     }
 
 
