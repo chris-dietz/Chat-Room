@@ -91,6 +91,7 @@ public class RestfulServer {
             return getHTTPError("400", "Invalid JSON Data");
         }
         String type;
+        System.out.println(msgJson);
         if(msgJson.has("type")) {
             type = msgJson.get("type").getAsString();
         }
@@ -147,9 +148,6 @@ public class RestfulServer {
         response.status(200);
         Set<String> params = request.queryParams();
         List<Message> messageList;
-
-        System.out.println(params);
-        System.out.println(response);
 
         if(params.contains("count")){
             try {

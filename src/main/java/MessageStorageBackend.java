@@ -121,26 +121,30 @@ public class MessageStorageBackend {
     }
 
     public void createDatabase(){
+
         Connection conn = null;
         Statement stmt = null;
         try {
-        conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
-        stmt = conn.createStatement();
-        String makedb = "CREATE DATABASE chat_history";
-        stmt.executeUpdate(makedb);
-        String usedb = "USE chat_history";
-        stmt.executeUpdate(usedb);
-        String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId LONG, mtype TEXT, mtimestamp TEXT, mroom TEXT)";
-        stmt.executeUpdate(makemessagetable);
-        String makeusertable = "CREATE TABLE user_history(username TEXT, usercookie TEXT)";
-        stmt.executeUpdate(makeusertable);
-        stmt.close();
-        conn.close();
+            Class.forName("org.mariadb.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
+            stmt = conn.createStatement();
+            String makedb = "CREATE DATABASE chat_history";
+            stmt.executeUpdate(makedb);
+            String usedb = "USE chat_history";
+            stmt.executeUpdate(usedb);
+            String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId LONG, mtype TEXT, mtimestamp TEXT, mroom TEXT)";
+            stmt.executeUpdate(makemessagetable);
+            String makeusertable = "CREATE TABLE user_history(username TEXT, usercookie TEXT)";
+            stmt.executeUpdate(makeusertable);
+            stmt.close();
+            conn.close();
         }
         catch(SQLException e){
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
     }
