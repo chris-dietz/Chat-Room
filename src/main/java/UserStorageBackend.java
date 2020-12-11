@@ -21,10 +21,9 @@ public class UserStorageBackend {
             Statement stmt = c.createStatement();
             String s = "USE chat_history";
             stmt.executeUpdate(s);
-            String sql = "INSERT INTO user_history(username, usercookie)";
-            PreparedStatement statement = c. prepareStatement(sql);
-            statement.setString(1, u.getName());
-            statement.setString(2, u.getAuthCookie());
+            String sql = "INSERT INTO user_history "
+                    + "VALUES('" + u.getName() +"','" + u.getAuthCookie()+"')";
+            stmt.executeUpdate(sql);
             c.close();
             stmt.close();
         }
