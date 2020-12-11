@@ -75,7 +75,7 @@ public class MessageStorageBackend {
             s.executeUpdate(usedb);
             String nothing = "nothing";
             String str = "INSERT INTO message_history "
-                    + "VALUES(" + m.getFrom() + ","+ m.getSubject() + ","+ m.getBody() + ","+ nothing + ","+ m.getMsgId() + ","+ m.getType() + ","+ m.getTimestamp() + ","+nothing +")";
+                    + "VALUES('" + m.getFrom() + "','"+ m.getSubject() + "','"+ m.getBody() + "','"+ nothing + "','"+ m.getMsgId() + "','"+ m.getType() + "','"+ m.getTimestamp() + "','"+nothing +"')";
             s.executeUpdate(str);
             s.close();
             c.close();
