@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 
 /**
  * High level abstraction for backend persistent storage of user data,
@@ -8,13 +9,36 @@ import java.util.List;
  */
 
 public class UserStorageBackend {
-    private final List<User> users;
-    public UserStorageBackend(){
-        users = new ArrayList<>();
+    //private final List<User> users;
+    private final String username;
+    private final String password;
+    private final String url;
+    public UserStorageBackend(String url, String username, String password){
+        this.url = url;
+        this.username = username;
+        this.password = password;
+
     }
 
     public void addUser(User u){
-        users.add(u);
+        try{
+            Connection c = DriverManager.getConnection(url,username, password);
+            Statement stmt = c.createStatement();
+            String s = "USE chat_history";
+            stmt.executeUpdate(s);
+            String sql = "INSERT INTO user_history "
+                    + "VALUES('" + u.getName() +"','" + u.getAuthCookie()+"')";
+            stmt.executeUpdate(sql);
+            c.close();
+            stmt.close();
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+
+        //users.add(u);
     }
 
     /*
@@ -22,12 +46,28 @@ public class UserStorageBackend {
      */
 
     public User getUserFromName(String name){
-        for(User u: users){
-            if(u.getName().equals(name)){
-                return u;
+        ResultSet resultSet;
+        PreparedStatement preparedStatement = null;
+        User toReturn = null;
+        try{
+            Connection c = DriverManager.getConnection(url,username, password);
+            Statement s = c.createStatement();
+            s.executeQuery("USE chat_history");
+            preparedStatement = c.prepareStatement("SELECT * FROM user_history WHERE username=?");
+            preparedStatement.setString(1,name);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                toReturn = new User(resultSet.getString("username"),resultSet.getString("usercookie"));
             }
+
+            s.close();
+            c.close();
+        }catch (SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
         }
-        return null;
+        return toReturn;
     }
 
     public boolean isCookieValid(String name, String cookie){

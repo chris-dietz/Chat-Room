@@ -16,6 +16,19 @@ public class Message {
     private final String timestamp;
     private final String room;
 
+    //type,from,subject,body,thread,room,Long.parseLong(msgId),timestamp
+    public Message(String type,String from, String subject, String body, String thread,String room, long msgId, String timestamp) {
+        this.type = type;
+        this.from = from;
+        this.subject = subject;
+        this.body = body;
+        this.thread = thread;
+        //SecureRandom rng = new SecureRandom();
+        this.msgId = msgId;
+        this.room = room;
+        this.timestamp = timestamp;
+    }
+
     public Message(String type,String from, String subject, String body, String thread,String room, long msgId) {
         this.type = type;
         this.from = from;
