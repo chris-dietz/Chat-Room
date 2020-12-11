@@ -9,9 +9,9 @@ import java.sql.*;
  */
 
 public class UserStorageBackend {
-    private final List<User> users;
+    //private final List<User> users;
     public UserStorageBackend(){
-        users = new ArrayList<>();
+        //users = new ArrayList<>();
 
     }
 
@@ -33,7 +33,7 @@ public class UserStorageBackend {
             System.out.println("VendorError: " + e.getErrorCode());
         }
 
-        users.add(u);
+        //users.add(u);
     }
 
     /*
@@ -41,12 +41,28 @@ public class UserStorageBackend {
      */
 
     public User getUserFromName(String name){
-        for(User u: users){
-            if(u.getName().equals(name)){
-                return u;
+        ResultSet resultSet;
+        PreparedStatement preparedStatement = null;
+        User toReturn = null;
+        try{
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "cs370minikube");
+            Statement s = c.createStatement();
+            s.executeQuery("USE chat_history");
+            preparedStatement = c.prepareStatement("SELECT * FROM user_history WHERE username=?");
+            preparedStatement.setString(1,name);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                toReturn = new User(resultSet.getString("username"),resultSet.getString("usercookie"));
             }
+
+            s.close();
+            c.close();
+        }catch (SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
         }
-        return null;
+        return toReturn;
     }
 
     public boolean isCookieValid(String name, String cookie){
