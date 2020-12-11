@@ -71,6 +71,8 @@ public class MessageStorageBackend {
             Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
             ///String sql = "INSERT INTO message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom)";
             Statement s  = c.createStatement();
+            String usedb = "USE chat_history";
+            s.executeUpdate(usedb);
             String nothing = "nothing";
             String str = "INSERT INTO message_history "
                     + "VALUES(" + m.getFrom() + ","+ m.getSubject() + ","+ m.getBody() + ","+ nothing + ","+ m.getMsgId() + ","+ m.getType() + ","+ m.getTimestamp() + ","+nothing +")";
@@ -126,13 +128,13 @@ public class MessageStorageBackend {
             stmt = conn.createStatement();
             //String rmprevdb = "DROP DATABASE chat_history";
             //stmt.executeUpdate(rmprevdb);
-            String makedb = "CREATE DATABASE chat_history";
+            String makedb = "CREATE DATABASE IF NOT EXISTS chat_history";
             stmt.executeUpdate(makedb);
             String usedb = "USE chat_history";
             stmt.executeUpdate(usedb);
-            String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId LONG, mtype TEXT, mtimestamp TEXT, mroom TEXT)";
+            String makemessagetable = "CREATE TABLE IF NOT EXISTS message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId LONG, mtype TEXT, mtimestamp TEXT, mroom TEXT)";
             stmt.executeUpdate(makemessagetable);
-            String makeusertable = "CREATE TABLE user_history(username TEXT, usercookie TEXT)";
+            String makeusertable = "CREATE TABLE IF NOT EXISTS user_history(username TEXT, usercookie TEXT)";
             stmt.executeUpdate(makeusertable);
             stmt.close();
             conn.close();
