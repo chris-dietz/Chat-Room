@@ -16,6 +16,39 @@ public class MessageStorageBackend {
         messages = new ArrayList<>(128);
         nextMsgId = 0;
         createDatabase();
+        nextMsgId = getLastID();
+
+
+    }
+
+    private long getLastID(){
+        long lastID = 0;
+        try {
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
+            ///String sql = "INSERT INTO message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom)";
+            Statement s  = c.createStatement();
+            s.executeUpdate("USE chat_history");
+            ResultSet isEmpty = s.executeQuery("SELECT EXISTS (SELECT 1 FROM message_history);");
+            isEmpty.next();
+            int empt = isEmpty.getInt(1);
+            if(empt == 1) {
+                ResultSet r = s.executeQuery("SELECT * FROM message_history ORDER BY msgId DESC LIMIT 1");
+                r.next();
+                lastID = Long.parseLong(r.getString("msgId"));
+            }
+            else {
+                lastID = 0;
+            }
+            s.close();
+            c.close();
+
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+        return lastID +1;
     }
 
     /*
