@@ -116,7 +116,6 @@ public class MessageStorageBackend {
     }
 
     public void createDatabase(){
-
         Connection conn = null;
         Statement stmt = null;
         try {
