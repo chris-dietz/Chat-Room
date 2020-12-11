@@ -65,6 +65,13 @@ body, html {
   color: #f2f2f2;
 }
 
+.nav form {
+  color: #f2f2f2;
+  vertical-align: bottom;
+  margin-left: 90px;
+  padding: 7px;
+}
+
 
 .content {
   background-color: #3b3d40;
@@ -75,9 +82,10 @@ body, html {
   max-height: calc(100% - 45px - 100px - 14%); /* To be honest, 14% looks the best as buffer, I have no idea why, this was just done through trial and error */
 }
 
-.content p, h2, li {
+.content p, h2, li, form {
   color: darkgrey;
   margin-left: 10;
+  vertical-align: bottom;
 }
 .content a {
   color: darkgrey;
