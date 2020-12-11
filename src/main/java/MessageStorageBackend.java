@@ -113,6 +113,24 @@ public class MessageStorageBackend {
      * Excludes message with matching ID
      */
    public List<Message> getMessagesPostedSince(long msg_id){
+       ArrayList<Message> toReturn = new ArrayList<>();
+       String sqlQuery = "SELECT * FROM message_history WHERE msgId BETWEEN "+msg_id+" AND "+ (nextMsgId-1) + ";";
+       ResultSet results;
+       try{
+           Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "cs370minikube");
+           Statement s = c.createStatement();
+           s.executeQuery("USE chat_history");
+           //System.out.println("Executing: "+ sqlQuery);
+           results =  s.executeQuery(sqlQuery);
+           retrieveFromQuery(results,toReturn);
+           s.close();
+           c.close();
+       }catch (SQLException e){
+           System.out.println("SQLException: " + e.getMessage());
+           System.out.println("SQLState: " + e.getSQLState());
+           System.out.println("VendorError: " + e.getErrorCode());
+       }
+       /*
         ArrayList<Message> toReturn = new ArrayList<>();
         if(messages.size() == 0){
             return toReturn;
@@ -131,6 +149,8 @@ public class MessageStorageBackend {
 
         //toReturn.remove(toReturn.size()-1);
         return toReturn;
+        */
+        return  toReturn;
     }
 
     public boolean insertMessage(Message m) {

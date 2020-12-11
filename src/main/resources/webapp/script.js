@@ -40,7 +40,7 @@ function setupChat() {
 
 function updateChat() {
     var Http = new XMLHttpRequest(); // creates a new HttpRequest Object
-    var url='retrieve_messages?since_id=0';
+    var url='retrieve_messages?count=10';
     Http.open("GET", url);
     Http.send();
     Http.onreadystatechange = (e) => {
