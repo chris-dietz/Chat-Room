@@ -12,15 +12,15 @@
       <p>Developed by <a href="https://github.com/tjhamlet" target="_blank">Tyler Craig</a>, <a href="https://github.com/vengefulsystems" target="_blank">Christopher Dietz</a>, and <a href="https://github.com/cbrock22" target="_blank">Cole Brock</a></p>
     </div>
   </div>
+  <div class="content">
+    <p id="MessageHistory">No messages sent</p>
+  </div>
   <div class="nav">
     <a class="active" href="index.html">Home</a> <!-- class active shows selected tab -->
     <a onclick="updateChat();">Update Chat</a>
-  </div>
-  <div class="content">
-    <p id="MessageHistory">No messages sent</p>
     <form onsubmit="postMessage()" id="registrationForm">
-      subject : <input type="text" autocomplete="false" name="subject" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/> <br />
-      body    : <input type="text" autocomplete="false" name="body" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/> <br />
+      subject : <input type="text" autocomplete="false" name="subject" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/>
+      body    : <input type="text" autocomplete="false" name="body" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/>
       <input type="submit" autofocus value="Submit"/>
     </form>
   </div>
