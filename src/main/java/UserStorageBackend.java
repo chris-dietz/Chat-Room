@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 
 /**
  * High level abstraction for backend persistent storage of user data,
@@ -11,9 +12,28 @@ public class UserStorageBackend {
     private final List<User> users;
     public UserStorageBackend(){
         users = new ArrayList<>();
+
     }
 
     public void addUser(User u){
+        try{
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
+            Statement stmt = c.createStatement();
+            String s = "USE chat_history";
+            stmt.executeUpdate(s);
+            String sql = "INSERT INTO user_history(username, usercookie)";
+            PreparedStatement statement = c. prepareStatement(sql);
+            statement.setString(1, u.getName());
+            statement.setString(2, u.getAuthCookie());
+            c.close();
+            stmt.close();
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+
         users.add(u);
     }
 

@@ -68,16 +68,16 @@ public class MessageStorageBackend {
     public boolean insertMessage(Message m) {
        Connection c = connection;
         try {
-            String sql = "INSERT INTO message_history(from, subject, body, thread, msgId, type, timestamp, room)";
+            String sql = "INSERT INTO message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom)";
             PreparedStatement statement = c.prepareStatement(sql);
             statement.setString(1, m.getFrom());
             statement.setString(2, m.getSubject());
             statement.setString(3, m.getBody());
-            statement.setString(4, ""); // Null because we did not end up using data field
+            statement.setString(4, "nothing"); // Null because we did not end up using data field
             statement.setLong(5, m.getMsgId());
             statement.setString(6, m.getType());
             statement.setString(7, m.getTimestamp());
-            statement.setString(8, ""); // Null because we did not end up using data field
+            statement.setString(8, "nothing"); // Null because we did not end up using data field
             c.close();
         }
         catch(SQLException e){
@@ -124,13 +124,13 @@ public class MessageStorageBackend {
         try {
         conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
         stmt = conn.createStatement();
-        String makedb = "CREATE DATABASE chat_history;";
+        String makedb = "CREATE DATABASE chat_history";
         stmt.executeUpdate(makedb);
-        String usedb = "USE chat_history;";
+        String usedb = "USE chat_history";
         stmt.executeUpdate(usedb);
-        String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId LONG, mtype TEXT, mtimestamp TEXT, mroom TEXT);";
+        String makemessagetable = "CREATE TABLE message_history(mfrom TEXT, msubject TEXT, mbody TEXT, mthread TEXT, msgId LONG, mtype TEXT, mtimestamp TEXT, mroom TEXT)";
         stmt.executeUpdate(makemessagetable);
-        String makeusertable = "CREATE TABLE user_history(usersname TEXT, cookies TEXT);";
+        String makeusertable = "CREATE TABLE user_history(username TEXT, usercookie TEXT)";
         stmt.executeUpdate(makeusertable);
         stmt.close();
         }
