@@ -71,7 +71,9 @@ public class MessageStorageBackend {
             Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
             ///String sql = "INSERT INTO message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom)";
             Statement s  = c.createStatement();
-            String str = "message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom) " + "VALUES(" + m.getFrom() + ","+ m.getSubject() + ","+ m.getBody() + ","+ "nothing" + ","+ m.getMsgId() + ","+ m.getType() + ","+ m.getTimestamp() + ","+ "nothing";
+            String nothing = "nothing";
+            String str = "INSERT INTO message_history "
+                    + "VALUES(" + m.getFrom() + ","+ m.getSubject() + ","+ m.getBody() + ","+ nothing + ","+ m.getMsgId() + ","+ m.getType() + ","+ m.getTimestamp() + ","+nothing +")";
             s.executeUpdate(str);
             s.close();
             c.close();
@@ -122,8 +124,8 @@ public class MessageStorageBackend {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
             stmt = conn.createStatement();
-            String rmprevdb = "DROP DATABASE chat_history";
-            stmt.executeUpdate(rmprevdb);
+            //String rmprevdb = "DROP DATABASE chat_history";
+            //stmt.executeUpdate(rmprevdb);
             String makedb = "CREATE DATABASE chat_history";
             stmt.executeUpdate(makedb);
             String usedb = "USE chat_history";
