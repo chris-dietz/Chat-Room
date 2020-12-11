@@ -11,11 +11,11 @@ import java.sql.*;
 public class MessageStorageBackend {
     private final List<Message> messages;
     private long nextMsgId;
-    Connection connection = null;
+
     public MessageStorageBackend(){
         messages = new ArrayList<>(128);
         nextMsgId = 0;
-        connection = createDatabase();
+        createDatabase();
     }
 
     /*
@@ -66,8 +66,9 @@ public class MessageStorageBackend {
     }
 
     public boolean insertMessage(Message m) {
-       Connection c = connection;
+
         try {
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
             String sql = "INSERT INTO message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom)";
             PreparedStatement statement = c.prepareStatement(sql);
             statement.setString(1, m.getFrom());
@@ -118,7 +119,7 @@ public class MessageStorageBackend {
         return currentMsgId;
     }
 
-    public Connection createDatabase(){
+    public void createDatabase(){
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -139,7 +140,7 @@ public class MessageStorageBackend {
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         }
-        return conn;
+
     }
 
 
