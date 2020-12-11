@@ -16,13 +16,13 @@
     <p id="MessageHistory">No messages sent</p>
   </div>
   <div class="nav">
-    <a class="active" href="index.html">Home</a> <!-- class active shows selected tab -->
-    <a onclick="updateChat();">Update Chat</a>
+    <a class="active" href="index.html">Reload</a> <!-- class active shows selected tab -->
     <form onsubmit="postMessage()" id="registrationForm">
-      subject : <input type="text" autocomplete="false" name="subject" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/>
-      body    : <input type="text" autocomplete="false" name="body" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/>
+      Subject : <input type="text" size="30%" name="subject" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/>
+      Body    : <input type="text" size="100%" name="body" pattern="[a-zA-Z0-9!.?<>/*@& ]{0,128}"/>
       <input type="submit" autofocus value="Submit"/>
     </form>
+    <a onclick="updateChat();">Update Chat</a>
   </div>
 </body>
 </html>
