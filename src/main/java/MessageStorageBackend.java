@@ -22,21 +22,56 @@ public class MessageStorageBackend {
      * Returns the last N messages posted to the chat room.
      *
      */
-   public List<Message> getLastNMessages(int n){
+    public List<Message> getLastNMessages(int n){
         ArrayList<Message> toReturn = new ArrayList<>(n);
-        if(n > messages.size()){ //Handle n being greater than the total number of messages by setting it to the max if it exceeds it.
-            n=messages.size();
-        }
+        //if(n > messages.size()){ //Handle n being greater than the total number of messages by setting it to the max if it exceeds it.
+        //    n=messages.size();
+       // }
 
-        if(messages.size() == 0){
+       /* if(messages.size() == 0){
             return toReturn;
         }
+        */
 
-        for(int i = 1; i<= n ; i++){
-            toReturn.add(messages.get(messages.size()-i));
+        String sqlQuery = " SELECT * FROM message_history ORDER BY msgId DESC LIMIT "+n+";";
+        ResultSet results;
+        try{
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "cs370minikube");
+            Statement s = c.createStatement();
+            s.executeQuery("USE chat_history");
+            results =  s.executeQuery(sqlQuery);
+            retrieveFromQuery(results,toReturn);
+            s.close();
+            c.close();
+        }catch (SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
         }
 
+
+        /*for(int i = 1; i<= n ; i++){
+            toReturn.add(messages.get(messages.size()-i));
+        }
+         */
+
         return toReturn;
+    }
+
+    private void retrieveFromQuery(ResultSet results, ArrayList<Message> result_list) throws SQLException{
+        while (results.next()){
+            String from = results.getString("mfrom");
+            String subject = results.getString("msubject");
+            String body = results.getString("mbody");
+            String thread = results.getString("mthread");
+            String msgId = results.getString("msgId");
+            String type = results.getString("mtype");
+            String timestamp = results.getString("mtimestamp");
+            String room = results.getString("mroom");
+            //String type,String from, String subject, String body, String thread,String room, long msgId, String timestamp
+            Message m = new Message(type,from,subject,body,thread,room,Long.parseLong(msgId),timestamp);
+            result_list.add(m);
+        }
     }
 
     /*
