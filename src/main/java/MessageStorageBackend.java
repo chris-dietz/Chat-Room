@@ -11,11 +11,14 @@ import java.sql.*;
 public class MessageStorageBackend {
     private final List<Message> messages;
     private long nextMsgId;
-    private final String username = "root";
-    private final String password = "cs370minikube";
-    private final String url = "jdbc:mysql://localhost/";
+    private final String username;
+    private final String password;
+    private final String url;
 
-    public MessageStorageBackend(){
+    public MessageStorageBackend(String url, String username, String password){
+        this.url = url;
+        this.username = username;
+        this.password = password;
         messages = new ArrayList<>(128);
         nextMsgId = 0;
         createDatabase();

@@ -14,14 +14,23 @@ class ServerError {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String message;
 
+
     public ServerError(String errorCode, String message) {
         this.errorCode = errorCode;
         this.message = message;
     }
 }
 
+/**
+ * "root";
+ *     private final String password = "cs370minikube";
+ *     private final String url = "jdbc:mysql://localhost/";
+ */
 @lombok.extern.slf4j.Slf4j
 public class RestfulServer {
+    private final String username = "root";
+    private final String password = "cs370minikube";
+    private final String url = "jdbc:mysql://localhost/";
 
     private final MessageStorageBackend group_messages;
     private final UserStorageBackend users;
@@ -29,8 +38,8 @@ public class RestfulServer {
     public RestfulServer() {
         this.configureRestfulApiServer();
         this.processRestfulApiRequests();
-        group_messages = new MessageStorageBackend();
-        users = new UserStorageBackend();
+        group_messages = new MessageStorageBackend(url,username,password);
+        users = new UserStorageBackend(url,username,password);
     }
 
     // Starts REST-ful API on port 8080

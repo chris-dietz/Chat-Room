@@ -10,11 +10,13 @@ import java.sql.*;
 
 public class UserStorageBackend {
     //private final List<User> users;
-    private final String username = "root";
-    private final String password = "cs370minikube";
-    private final String url = "jdbc:mysql://localhost/";
-    public UserStorageBackend(){
-        //users = new ArrayList<>();
+    private final String username;
+    private final String password;
+    private final String url;
+    public UserStorageBackend(String url, String username, String password){
+        this.url = url;
+        this.username = username;
+        this.password = password;
 
     }
 
