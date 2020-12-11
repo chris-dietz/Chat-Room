@@ -61,14 +61,6 @@ public class MessageStorageBackend {
      */
     public List<Message> getLastNMessages(int n){
         ArrayList<Message> toReturn = new ArrayList<>(n);
-        //if(n > messages.size()){ //Handle n being greater than the total number of messages by setting it to the max if it exceeds it.
-        //    n=messages.size();
-       // }
-
-       /* if(messages.size() == 0){
-            return toReturn;
-        }
-        */
 
         String sqlQuery = " SELECT * FROM message_history ORDER BY msgId DESC LIMIT "+n+";";
         ResultSet results;
@@ -87,10 +79,7 @@ public class MessageStorageBackend {
         }
 
 
-        /*for(int i = 1; i<= n ; i++){
-            toReturn.add(messages.get(messages.size()-i));
-        }
-         */
+
 
         return toReturn;
     }
@@ -176,7 +165,7 @@ public class MessageStorageBackend {
         Statement stmt = null;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
+            conn = DriverManager.getConnection(url, username,password);
             stmt = conn.createStatement();
             //String rmprevdb = "DROP DATABASE chat_history";
             //stmt.executeUpdate(rmprevdb);
