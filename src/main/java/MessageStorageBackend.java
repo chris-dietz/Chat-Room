@@ -80,6 +80,7 @@ public class MessageStorageBackend {
             statement.setString(7, m.getTimestamp());
             statement.setString(8, "nothing"); // Null because we did not end up using data field
             c.close();
+
         }
         catch(SQLException e){
             System.out.println("SQLException: " + e.getMessage());
@@ -134,6 +135,7 @@ public class MessageStorageBackend {
         String makeusertable = "CREATE TABLE user_history(username TEXT, usercookie TEXT)";
         stmt.executeUpdate(makeusertable);
         stmt.close();
+        conn.close();
         }
         catch(SQLException e){
             System.out.println("SQLException: " + e.getMessage());
