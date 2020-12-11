@@ -9,7 +9,6 @@ import java.sql.*;
  */
 // This is coles comment
 public class MessageStorageBackend {
-    private final List<Message> messages;
     private long nextMsgId;
     private final String username;
     private final String password;
@@ -19,7 +18,6 @@ public class MessageStorageBackend {
         this.url = url;
         this.username = username;
         this.password = password;
-        messages = new ArrayList<>(128);
         nextMsgId = 0;
         createDatabase();
         nextMsgId = getLastID();
@@ -136,30 +134,10 @@ public class MessageStorageBackend {
            System.out.println("SQLState: " + e.getSQLState());
            System.out.println("VendorError: " + e.getErrorCode());
        }
-       /*
-        ArrayList<Message> toReturn = new ArrayList<>();
-        if(messages.size() == 0){
-            return toReturn;
-        }
-        Message current = messages.get(messages.size()-1);
-        int n = 1;
-        while (n<messages.size() && current.getMsgId() != msg_id){
-            toReturn.add(current);
-            current = messages.get(messages.size()-1-n);
-            n++;
-        }
-
-        if(current.getMsgId() != msg_id){
-            return new ArrayList<>();
-        }
-
-        //toReturn.remove(toReturn.size()-1);
-        return toReturn;
-        */
         return  toReturn;
     }
 
-    public boolean insertMessage(Message m) {
+    public void insertMessage(Message m) {
 
         try {
             Connection c = DriverManager.getConnection(url,username, password);
@@ -180,26 +158,6 @@ public class MessageStorageBackend {
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         }
-       return messages.add(m);
-    }
-
-    public Message getMessage(long msg_id){
-        for(Message m: messages){
-            if(m.getMsgId() == msg_id){
-                return m;
-            }
-        }
-        return null;
-    }
-
-    public Message removeMessage(long msg_id){
-        for(Message m: messages){
-            if(m.getMsgId() == msg_id){
-                messages.remove(m);
-                return m;
-            }
-        }
-        return null;
     }
 
     /**
