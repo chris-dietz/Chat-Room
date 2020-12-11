@@ -27,7 +27,7 @@ function nextIndexOf(strToIndex, index, char) {
 
 function setupChat() {
     var Http = new XMLHttpRequest(); // creates a new HttpRequest Object
-
+    setInterval(function() {updateChat();}, 1000);
     if(document.cookie == "") { // if no cookies exits
         var name = prompt("What is your name?", "John Doe");
         Http.open("POST", '/register_user');
