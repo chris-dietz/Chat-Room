@@ -10,6 +10,9 @@ import java.sql.*;
 
 public class UserStorageBackend {
     //private final List<User> users;
+    private final String username = "root";
+    private final String password = "cs370minikube";
+    private final String url = "jdbc:mysql://localhost/";
     public UserStorageBackend(){
         //users = new ArrayList<>();
 
@@ -17,7 +20,7 @@ public class UserStorageBackend {
 
     public void addUser(User u){
         try{
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
+            Connection c = DriverManager.getConnection(url,username, password);
             Statement stmt = c.createStatement();
             String s = "USE chat_history";
             stmt.executeUpdate(s);
@@ -45,7 +48,7 @@ public class UserStorageBackend {
         PreparedStatement preparedStatement = null;
         User toReturn = null;
         try{
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "cs370minikube");
+            Connection c = DriverManager.getConnection(url,username, password);
             Statement s = c.createStatement();
             s.executeQuery("USE chat_history");
             preparedStatement = c.prepareStatement("SELECT * FROM user_history WHERE username=?");

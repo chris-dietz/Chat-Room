@@ -11,6 +11,9 @@ import java.sql.*;
 public class MessageStorageBackend {
     private final List<Message> messages;
     private long nextMsgId;
+    private final String username = "root";
+    private final String password = "cs370minikube";
+    private final String url = "jdbc:mysql://localhost/";
 
     public MessageStorageBackend(){
         messages = new ArrayList<>(128);
@@ -24,7 +27,7 @@ public class MessageStorageBackend {
     private long getLastID(){
         long lastID = 0;
         try {
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
+            Connection c = DriverManager.getConnection(url, username,password);
             ///String sql = "INSERT INTO message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom)";
             Statement s  = c.createStatement();
             s.executeUpdate("USE chat_history");
@@ -69,7 +72,7 @@ public class MessageStorageBackend {
         String sqlQuery = " SELECT * FROM message_history ORDER BY msgId DESC LIMIT "+n+";";
         ResultSet results;
         try{
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "cs370minikube");
+            Connection c = DriverManager.getConnection(url,username, password);
             Statement s = c.createStatement();
             s.executeQuery("USE chat_history");
             results =  s.executeQuery(sqlQuery);
@@ -156,7 +159,7 @@ public class MessageStorageBackend {
     public boolean insertMessage(Message m) {
 
         try {
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
+            Connection c = DriverManager.getConnection(url,username, password);
             ///String sql = "INSERT INTO message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom)";
             Statement s  = c.createStatement();
             String usedb = "USE chat_history";
