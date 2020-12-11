@@ -71,10 +71,22 @@ public class MessageStorageBackend {
             Connection c = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
             ///String sql = "INSERT INTO message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom)";
             Statement s  = c.createStatement();
-            String str = "message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom) " + "VALUES(" + m.getFrom() + ","+ m.getSubject() + ","+ m.getBody() + ","+ "nothing" + ","+ m.getMsgId() + ","+ m.getType() + ","+ m.getTimestamp() + ","+ "nothing";
+            String from = m.getFrom()+ ",";
+            String subject = m.getSubject()+ ",";
+            String body = m.getBody()+ ",";
+            String thread = "nothing"+ ",";
+            long msgId = m.getMsgId();
+            String type = m.getType()+ ",";
+            String timestamp = m.getTimestamp()+ ",";
+            String room = "nothing";
+            String str = "INSERT INTO chat_history " +
+                            "VALUES("+from+subject+body+thread+msgId+","+type+timestamp+room+")";
+            //String str = "message_history(mfrom, msubject, mbody, mthread, msgId, mtype, mtimestamp, mroom) " + "VALUES(" + m.getFrom() + ","+ m.getSubject() + ","+ m.getBody() + ","+ "nothing" + ","+ m.getMsgId() + ","+ m.getType() + ","+ m.getTimestamp() + ","+ "nothing";
             s.executeUpdate(str);
             s.close();
             c.close();
+            messages.add(m);
+            return true;
 
         }
         catch(SQLException e){
@@ -82,7 +94,8 @@ public class MessageStorageBackend {
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         }
-       return messages.add(m);
+
+       return false;
     }
 
     public Message getMessage(long msg_id){
@@ -117,14 +130,14 @@ public class MessageStorageBackend {
 
     public void createDatabase(){
 
-        Connection conn = null;
-        Statement stmt = null;
+        Connection conn;
+        Statement stmt;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root","cs370minikube");
             stmt = conn.createStatement();
-            String rmprevdb = "DROP DATABASE chat_history";
-            stmt.executeUpdate(rmprevdb);
+            //String rmprevdb = "DROP DATABASE chat_history";
+            //stmt.executeUpdate(rmprevdb);
             String makedb = "CREATE DATABASE chat_history";
             stmt.executeUpdate(makedb);
             String usedb = "USE chat_history";
